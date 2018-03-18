@@ -1,3 +1,4 @@
 # CellularAutomata
 the game of cellular automata
-test
+
+# c'est quoi les automate cellulaire
