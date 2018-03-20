@@ -1,9 +1,9 @@
 #include<iostream>
 #include"../include/Cellule.h"
-#include"../include/Planche.h"
+#include"../include/Grille.h"
 
 int main(){
-  Planche p = Planche();
-  cout<<p<<endl;
+  Grille g = Grille();
+  cout<<g<<endl;
   return 0;
 }

@@ -3,12 +3,12 @@
 #include<time.h>
 
 #include"../include/Cellule.h"
-#include"../include/Planche.h"
+#include"../include/Grille.h"
 
 using namespace std;
 
 
-Planche::Planche()
+Grille::Grille()
 {
   srand(time(NULL));
   for(int i = 0; i < N; i++){
@@ -22,7 +22,7 @@ Planche::Planche()
 }
 
 
-void Planche::affiche(ostream& os) const
+void Grille::affiche(ostream& os) const
 {
   for(int i = 0; i < N; i++){
     for(int j = 0; j < N; j++){
@@ -33,7 +33,7 @@ void Planche::affiche(ostream& os) const
   }
 }
 
-ostream& operator<<(ostream& os, Planche& p)
+ostream& operator<<(ostream& os, Grille& p)
 {
   p.affiche(os);
   return os;

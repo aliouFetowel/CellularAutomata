@@ -1,5 +1,5 @@
-#ifndef _PLANCHE_H
-#define _PLANCHE_H
+#ifndef _GRILLE_H
+#define _GRILLE_H
 
 #include<vector>
 #include<time.h>
@@ -9,15 +9,15 @@ using namespace std;
 
 #define N 10
 
-class Planche{
+class Grille{
   private:
     vector<vector<Cellule> > cells;
    public:
-    Planche();
+    Grille();
 
     void affiche(ostream&) const;
 };
 
-std::ostream& operator<<(ostream&, Planche&);
+std::ostream& operator<<(ostream&, Grille&);
 
 #endif
