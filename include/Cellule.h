@@ -9,9 +9,9 @@
 using namespace std;
 
 class Cellule{
-  private: 
+  private:
     bool etat;
-  
+
   public:
   /* constructeurs */
     Cellule();
@@ -19,9 +19,9 @@ class Cellule{
   /* getteurs et setteurs */
     bool getEtat() const;
     void setEtat(bool);
-    
-    ostream& affiche(ostream&);
+
+    void affiche(ostream&) const;
 };
 
-ostream& operator<<(ostream&, Cellule&)
+ostream& operator<<(ostream&, Cellule&);
 #endif

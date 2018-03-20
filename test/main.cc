@@ -4,6 +4,6 @@
 
 int main(){
   Planche p = Planche();
-  cout<<p.affiche(cout)<<endl;
+  cout<<p<<endl;
   return 0;
 }

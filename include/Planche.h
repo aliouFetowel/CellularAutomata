@@ -5,18 +5,19 @@
 #include<time.h>
 #include"Cellule.h"
 
-define N 10;
+using namespace std;
+
+#define N 10
 
 class Planche{
   private:
-    std::vector<Cellule> cells[N][N];
-    int n;
+    vector<vector<Cellule> > cells;
    public:
     Planche();
 
-    void affiche(std::ostream) const;
+    void affiche(ostream&) const;
 };
-  
-std::ostream& operator<<(std::ostream&, Planche&);
+
+std::ostream& operator<<(ostream&, Planche&);
 
 #endif

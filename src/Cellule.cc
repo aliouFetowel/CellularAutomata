@@ -1,30 +1,33 @@
-#include<iostream> 
+#include<iostream>
+
 #include"../include/Cellule.h"
+
 using namespace std;
 
+
+
 Cellule::Cellule(){
-  this.etat = false; 
+  this->etat = false;
 }
 
 Cellule::Cellule(bool etat)
 {
-  this.etat = etat;
+  this->etat = etat;
 }
 
-bool Cellule::getEtat() const 
+bool Cellule::getEtat() const
 {
-  return this.etat;
+  return this->etat;
 }
 
 void Cellule::setEtat(bool etat)
 {
-  this.etat = etat;
+  this->etat = etat;
 }
-
 
 void  Cellule::affiche(ostream& os) const
 {
-  os<<etat<<;
+  os<<etat;
 }
 
 ostream& operator<<(ostream& os, Cellule& c)
