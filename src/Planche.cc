@@ -12,10 +12,9 @@ Planche::Planche()
 {
   srand(time(NULL));
   for(int i = 0; i < N; i++){
-    cells.push_back(vector<Cellule>(N));
+    cells.push_back(vector<Cellule>(N)); /* ajouts de ligne N cases */
   }
   for(int i = 0; i < N; i++){
-
       int x = rand() % N;
       int y = rand() % N;
       if(cells[x][y].getEtat() != true) cells[x][y] = true;
@@ -27,7 +26,8 @@ void Planche::affiche(ostream& os) const
 {
   for(int i = 0; i < N; i++){
     for(int j = 0; j < N; j++){
-      cells[i][j].affiche(os)<<" ";
+      cells[i][j].affiche(os);
+      os<<" ";
     }
     os<<endl;
   }
