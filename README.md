@@ -28,3 +28,9 @@ Par la suite nous pourrons utiliser ce fichier comme parseur pour un rendu graph
 
 ### Limite
 pour ce premier travail nous nous somme limité à un simple affichage de la Planche sur la sortie standard.
+
+### Compilation & Exécution
+
+pour la compilation et l'exécution, en attendant le `makefile`\
+`gcc -g -Wall ../src/Cellule.cc ../src/Platon.cc main.cc -o prog`\
+`./prog`
