@@ -5,8 +5,8 @@ using namespace std;
 
 int main()
 {
-    string parse = "$
-      ....x.....
+    string parse = "
+    a <....x.....
       ..x..x....
       ...x...x..
       ........x.
@@ -15,17 +15,16 @@ int main()
       ..........
       ...x......
       .....x....
-      ...x....x.
-      $</baseQueueName>";
+      ...x....x.>";
     stringstream ss(parse);
     string temp = "";
 
     cout << "current position " << ss.tellg() << endl;
-    getline(ss, temp, '$');
+    getline(ss, temp, '^');
     cout << "current position " << ss.tellg() << endl;
-    getline(ss, temp, '$');
-       
-  
+    getline(ss, temp, '^');
+
+
     cout << "temp: " << temp << endl;
 
     cin.ignore();
