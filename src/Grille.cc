@@ -21,7 +21,7 @@ Grille::Grille()
   }
   for(int i = 0; i < N; i++){
       for(int j = 0; j < N; j++){
-          cells[i][j] = Cellule(0, i, j);
+          cells[i][j] = Cellule(false, i, j);
       }
   }
 
@@ -59,6 +59,10 @@ void Grille::ecrire(){
     }else{
         cerr <<"erreur lors de l'ouverture du fichier"<<endl;
     }
+    /*cout<<"position "<<file.tellp()<<endl;
+    file.seekp(-114, ios::cur);
+    cout<<"position "<<file.tellp()<<endl;*/
+
 }
 
 
@@ -67,126 +71,144 @@ Cellule Grille::getCellule(int abs, int ord)
     return cells[abs][ord];
 }
 
-void Grille::iniVoisins()
+ vector<Cellule>& Grille::getVoisins(int i, int j)
+{
+            vector<Cellule> * vois = NULL;
+
+            if(i == 0 && j == 0){
+                vois->push_back(getCellule(j,N-1));
+                vois->push_back(getCellule(j+1,N-1));
+                vois->push_back(getCellule(N-1,i));
+                vois->push_back(getCellule(N-1,i+1));
+                vois->push_back(getCellule(N-1,N-1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(i+1,j+1));
+                vois->push_back(getCellule(i,j+1));
+
+            }
+            else if(i == 0 && j == N-1){
+                vois->push_back(getCellule(N-1, N-1));
+                vois->push_back(getCellule(i+1,j-1));
+                vois->push_back(getCellule(j-1,N-1));
+                vois->push_back(getCellule(0,0));
+                vois->push_back(getCellule(i+1,0));
+                vois->push_back(getCellule(i,j-1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(j,0));
+
+            }
+            else if(i == N-1 && j == 0){
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i,j+1));
+                vois->push_back(getCellule(i-1,j-1));
+                vois->push_back(getCellule(j,j));
+                vois->push_back(getCellule(j,j+1));
+                vois->push_back(getCellule(N-1,N-1));
+                vois->push_back(getCellule(i-1,N-1));
+                vois->push_back(getCellule(j,N-1));
+
+            }
+            else if(i == N-1 && j == N-1){
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i-1,j-1));
+                vois->push_back(getCellule(i,j-1));
+                vois->push_back(getCellule(0,j));
+                vois->push_back(getCellule(0,j-1));
+                vois->push_back(getCellule(i-1,0));
+                vois->push_back(getCellule(i,0));
+                vois->push_back(getCellule(0,0));
+
+            }
+            else if(i == 0 && j != 0 && j != N-1){
+                vois->push_back(getCellule(i,j-1));
+                vois->push_back(getCellule(i+1,j-1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(i+1,j+1));
+                vois->push_back(getCellule(i,j+1));
+                vois->push_back(getCellule(N-1,j-1));
+                vois->push_back(getCellule(N-1,j));
+                vois->push_back(getCellule(N-1,j+1));
+
+            }
+            else if(i == N-1 && j != i && j != 0){
+                vois->push_back(getCellule(i,j-1));
+                vois->push_back(getCellule(i-1,j-1));
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i-1,j+1));
+                vois->push_back(getCellule(i,j+1));
+                vois->push_back(getCellule(0,j-1));
+                vois->push_back(getCellule(0,j));
+                vois->push_back(getCellule(0,j+1));
+
+            }
+            else if(j == 0 && i != j && i != N-1){
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i-1,j+1));
+                vois->push_back(getCellule(i,j+1));
+                vois->push_back(getCellule(i+1,j+1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(i-1,N-1));
+                vois->push_back(getCellule(i,N-1));
+                vois->push_back(getCellule(i+1,N-1));
+
+            }
+            else if(j == N-1 && i != j && i != 0){
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i-1,j-1));
+                vois->push_back(getCellule(i,j-1));
+                vois->push_back(getCellule(i+1,j-1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(i-1,0));
+                vois->push_back(getCellule(i,0));
+                vois->push_back(getCellule(i+1,0));
+
+            }
+            else{
+                vois->push_back(getCellule(i-1,j-1));
+                vois->push_back(getCellule(i-1,j));
+                vois->push_back(getCellule(i-1,j+1));
+                vois->push_back(getCellule(i,j+1));
+                vois->push_back(getCellule(i+1,j+1));
+                vois->push_back(getCellule(i+1,j));
+                vois->push_back(getCellule(i+1, j-1));
+                vois->push_back(getCellule(i,j-1));
+
+            }
+        return *vois;
+}
+
+int Grille::voisinsVivant(int x, int y)
+{
+    int cpt = 0;
+    vector<Cellule> vois = getVoisins(x, y);
+    for(unsigned int i = 0; i < vois.size(); i++){
+        if(vois[i].getEtat() == true) cpt++;
+    }
+    return cpt;
+}
+
+void Grille::EtapeSuivante(Grille& grille)
 {
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            vector<Cellule> vois;
-            vois.clear();
-            if(i == 0 && j == 0){
-                vois.push_back(getCellule(j,N-1));
-                vois.push_back(getCellule(j+1,N-1));
-                vois.push_back(getCellule(N-1,i));
-                vois.push_back(getCellule(N-1,i+1));
-                vois.push_back(getCellule(N-1,N-1));
-                vois.push_back(getCellule(i+1,j));
-                vois.push_back(getCellule(i+1,j+1));
-                vois.push_back(getCellule(i,j+1));
-
-                cells[i][j].addVoisins(vois);
+            int nbVoisins = voisinsVivant(i,j);
+            if(nbVoisins == 3){
+                cells[i][j].setEtat(true);
             }
-            else if(i == 0 && j == N-1){
-                vois.push_back(getCellule(N-1, N-1));
-                vois.push_back(getCellule(i+1,j-1));
-                vois.push_back(getCellule(N+1,0));
-                vois.push_back(getCellule(0,0));
-                vois.push_back(getCellule(1,0));
-                vois.push_back(getCellule(i,j-1));
-                vois.push_back(getCellule(i+1,j-1));
-                vois.push_back(getCellule(i+1,j));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(i == N-1 && j == 0){
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i,j+1));
-                vois.push_back(getCellule(i-1,j-1));
-                vois.push_back(getCellule(j,j));
-                vois.push_back(getCellule(j,j+1));
-                vois.push_back(getCellule(N-1,N-1));
-                vois.push_back(getCellule(i-1,N-1));
-                vois.push_back(getCellule(j,N-1));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(i == N-1 && j == N-1){
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i-1,j-1));
-                vois.push_back(getCellule(i,j-1));
-                vois.push_back(getCellule(0,j));
-                vois.push_back(getCellule(0,j-1));
-                vois.push_back(getCellule(i-1,0));
-                vois.push_back(getCellule(i,0));
-                vois.push_back(getCellule(0,0));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(i == 0 && j != 0 && j != N-1){
-                vois.push_back(getCellule(i,j-1));
-                vois.push_back(getCellule(i+1,j-1));
-                vois.push_back(getCellule(i+1,j));
-                vois.push_back(getCellule(i+1,j+1));
-                vois.push_back(getCellule(i,j+1));
-                vois.push_back(getCellule(N-1,j-1));
-                vois.push_back(getCellule(N-1,j));
-                vois.push_back(getCellule(N-1,j+1));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(i == N-1 && j != i && j != 0){
-                vois.push_back(getCellule(i,j-1));
-                vois.push_back(getCellule(i-1,j-1));
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i-1,j+1));
-                vois.push_back(getCellule(i,j+1));
-                vois.push_back(getCellule(0,j-1));
-                vois.push_back(getCellule(0,j));
-                vois.push_back(getCellule(0,j+1));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(j == 0 && i != j && i != N-1){
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i-1,j+1));
-                vois.push_back(getCellule(i,j+1));
-                vois.push_back(getCellule(i+1,j+1));
-                vois.push_back(getCellule(i+1,j));
-                vois.push_back(getCellule(i-1,N-1));
-                vois.push_back(getCellule(i,N-1));
-                vois.push_back(getCellule(i+1,N-1));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else if(j == N-1 && i != j && i != 0){
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i-1,j-1));
-                vois.push_back(getCellule(i,j-1));
-                vois.push_back(getCellule(i+1,j-1));
-                vois.push_back(getCellule(i+1,j));
-                vois.push_back(getCellule(i-1,0));
-                vois.push_back(getCellule(i,0));
-                vois.push_back(getCellule(i+1,0));
-
-                cells[i][j].addVoisins(vois);
-            }
-            else{
-                vois.push_back(getCellule(i-1,j-1));
-                vois.push_back(getCellule(i-1,j));
-                vois.push_back(getCellule(i-1,j+1));
-                vois.push_back(getCellule(i,j+1));
-                vois.push_back(getCellule(i+1,j+1));
-                vois.push_back(getCellule(i+1,j));
-                vois.push_back(getCellule(i+1, j-1));
-                vois.push_back(getCellule(i,j-1));
-
-                cells[i][j].addVoisins(vois);
+            else if( nbVoisins == 4 || nbVoisins == 1 || nbVoisins == 0){
+                cells[i][j].setEtat(false);
             }
         }
     }
+    ecrire();
 }
 
-void Grille::lire(){
+
+
+Grille& Grille::lire(){
 //    ifstream file(fichier.c_str());
+    Grille *g = new Grille();
+    if(file.tellg() != 0) file.seekg(-114, ios::cur); //pour lire la dernière grille
     string chaine = "", ligne = "";
     char delim;
     int k = 0;
@@ -197,7 +219,7 @@ void Grille::lire(){
             getline(ss,ligne,'\n'); // pour sautetr une ligne
             while(getline(ss, ligne, '\n')){
                 for(int j = 0; j < N; j++){
-                    cells[k][j].setEtat((bool)ligne[j]);
+                    g->cells[k][j].setEtat((bool)ligne[j]);
                 }
                 k++;
                 ligne = "";
@@ -206,6 +228,7 @@ void Grille::lire(){
     }else{
         cerr << "erreur lors de l'ouverture du fichier" <<endl;
     }
+    return *g;
 }
 
 

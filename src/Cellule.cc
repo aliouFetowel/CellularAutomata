@@ -51,10 +51,3 @@ Cellule& Cellule::operator=(const Cellule& celCopie)
      this->ord = celCopie.ord;
      return *this;
 }
-
-void Cellule::addVoisins(vector<Cellule> &vois)
-{
-    for(unsigned int i = 0; i < vois.size(); i++){
-        voisins.push_back(vois[i]);
-    }
-}

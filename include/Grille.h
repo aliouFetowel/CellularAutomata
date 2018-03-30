@@ -23,12 +23,12 @@ class Grille{
 
     void affiche(ostream&) const;
     void ecrire();
-    void lire();
+    Grille& lire();
     Cellule getCellule(int , int);
     void iniRand();
-    void iniVoisins();
-
-
+    vector<Cellule>& getVoisins(int, int);
+    int voisinsVivant(int, int);
+    void EtapeSuivante(Grille&);
 };
 
 ostream& operator<<(ostream&, Grille&);

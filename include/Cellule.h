@@ -14,10 +14,6 @@ class Cellule{
     bool etat;
     int abs;
     int ord;
-    vector<Cellule> voisins;
-
-    /* mes voisins */
-    vector<Cellule> iniVoisins();
 
   public:
   /* constructeurs */
@@ -30,7 +26,6 @@ class Cellule{
 
     void affiche(ostream&) const;
 
-    void addVoisins(vector<Cellule>&);
     //operator
     Cellule& operator=(const Cellule&);
 };
