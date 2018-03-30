@@ -1,18 +1,16 @@
 #include<iostream>
+#include<vector>
 
 #include"../include/Cellule.h"
 
 using namespace std;
 
 
-
-Cellule::Cellule(){
-  this->etat = false;
-}
-
-Cellule::Cellule(bool etat)
+Cellule::Cellule(bool etat, int abs, int ord)
 {
   this->etat = etat;
+  this->abs = abs;
+  this->ord = ord;
 }
 
 bool Cellule::getEtat() const
@@ -25,6 +23,16 @@ void Cellule::setEtat(bool etat)
   this->etat = etat;
 }
 
+int Cellule::getAbs() const
+{
+    return this->abs;
+}
+
+int Cellule::getOrd() const
+{
+    return this->ord;
+}
+
 void  Cellule::affiche(ostream& os) const
 {
   os<<etat;
@@ -34,4 +42,19 @@ ostream& operator<<(ostream& os, Cellule& c)
 {
   c.affiche(os);
   return os;
+}
+
+Cellule& Cellule::operator=(const Cellule& celCopie)
+{
+     this->etat = celCopie.etat;
+     this->abs = celCopie.abs;
+     this->ord = celCopie.ord;
+     return *this;
+}
+
+void Cellule::addVoisins(vector<Cellule> &vois)
+{
+    for(unsigned int i = 0; i < vois.size(); i++){
+        voisins.push_back(vois[i]);
+    }
 }

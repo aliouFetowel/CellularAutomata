@@ -3,6 +3,9 @@
 
 #include<vector>
 #include<time.h>
+#include<string>
+#include<fstream>
+
 #include"Cellule.h"
 
 using namespace std;
@@ -12,12 +15,22 @@ using namespace std;
 class Grille{
   private:
     vector<vector<Cellule> > cells;
+    string const fichier = "../Ressources/jeux.txt";
+    fstream file;
    public:
     Grille();
+    //~Grille();
 
     void affiche(ostream&) const;
+    void ecrire();
+    void lire();
+    Cellule getCellule(int , int);
+    void iniRand();
+    void iniVoisins();
+
+
 };
 
-std::ostream& operator<<(ostream&, Grille&);
+ostream& operator<<(ostream&, Grille&);
 
 #endif
