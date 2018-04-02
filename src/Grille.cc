@@ -46,7 +46,7 @@ void Grille::iniRand()
 void Grille::ecrire(){
     //ofstream file(fichier.c_str());
     file.open(fichier, fstream::in | fstream::app);
-    cout<<"position avant écriture "<<file.tellp()<<endl;
+    //cout<<"position avant écriture "<<file.tellp()<<endl;
     string chaine = "";
     if(file){
         file << "$";
@@ -64,7 +64,7 @@ void Grille::ecrire(){
     }else{
         cerr <<"erreur lors de l'ouverture du fichier"<<endl;
     }
-    cout<<"position après écriture "<<file.tellg()<<endl;
+    //cout<<"position après écriture "<<file.tellg()<<endl;
     /*cout<<"position "<<file.tellp()<<endl;
     file.seekp(-114, ios::cur);
     cout<<"position "<<file.tellp()<<endl;*/
@@ -76,16 +76,16 @@ void Grille::lire(){
 //  ifstream file(fichier.c_str());
     //Grille *g2 = new Grille();
     file.open(fichier, fstream::out | fstream::app);
-    cout<<"dans lire position "<<file.tellg()<<endl;
-    if(file.tellg() != 0) file.seekg(-114, ios::cur); //pour lire la dernière grille
-    cout<<"dans lire position "<<file.tellg()<<endl;
+    //cout<<"dans lire position "<<file.tellg()<<endl;
+    if(file.tellg() != 0) file.seekg(-(N*N+14), ios::cur); //pour lire la dernière grille
+    //cout<<"dans lire position "<<file.tellg()<<endl;
 
     string chaine = "", ligne = "";
     char delim;
     int k = 0;
     if(file){
         file >> delim; // récuperer $
-        cout<<"le delimitateur est"<<delim<<endl;
+    //    cout<<"le delimitateur est"<<delim<<endl;
         while(getline(file, chaine,  delim)){
             stringstream ss(chaine);
             getline(ss,ligne,'\n'); // pour sautetr une ligne
@@ -96,13 +96,13 @@ void Grille::lire(){
                 k++;
                 ligne = "";
             }
-            cout<<"dans la lecture position "<<file.tellg()<<endl;
+        //    cout<<"dans la lecture position "<<file.tellg()<<endl;
         }
         //file.seekg(-114, ios::cur); //pour lire la dernière grille
     }else{
         cerr << "erreur lors de l'ouverture du fichier" <<endl;
     }
-    cout<<"position après lecture "<<file.tellg()<<endl;
+    //cout<<"position après lecture "<<file.tellg()<<endl;
     file.close();
 }
 
@@ -243,17 +243,19 @@ void Grille::EtapeSuivante()
         for(int j = 0; j < N; j++){
             //printf("je suis dans la boucle\n");
             int nbVoisins = voisinsVivant(i,j);
-            if(nbVoisins == 3){
-            //    printf("je suis dans le prémier if\n");
-                g->cells[i][j].setEtat(true);
+            //Cellule cel = getCellule(i,j);
+            if(cells[i][j].getEtat() == false){
+                if(nbVoisins == 3) g->cells[i][j].setEtat(true);
             }
-            else if( nbVoisins == 4 || nbVoisins == 1 || nbVoisins == 0){
-            //    printf("je suis dans le deuxième if\n");
-                cells[i][j].setEtat(false);
+            if(cells[i][j].getEtat() == true){
+            //    printf("je suis dans le prémier if\n");
+                if(nbVoisins == 2 || nbVoisins == 3) g->cells[i][j].setEtat(true);
+                else g->cells[i][j].setEtat(false);
+
             }
         }
     }
-    //cout<<*g<<endl;
+    
     *this = *g;
 }
 
