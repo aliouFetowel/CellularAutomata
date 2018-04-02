@@ -35,7 +35,8 @@ int Cellule::getOrd() const
 
 void  Cellule::affiche(ostream& os) const
 {
-  os<<etat;
+    if(etat == true) os<<"X";
+    else os<<".";
 }
 
 ostream& operator<<(ostream& os, Cellule& c)

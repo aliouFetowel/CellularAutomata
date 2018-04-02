@@ -15,7 +15,7 @@ using namespace std;
 class Grille{
   private:
     vector<vector<Cellule> > cells;
-    string const fichier = "../Ressources/jeux.txt";
+    static string fichier;
     fstream file;
    public:
     Grille();
@@ -23,14 +23,17 @@ class Grille{
 
     void affiche(ostream&) const;
     void ecrire();
-    Grille& lire();
+    void lire();
     Cellule getCellule(int , int);
     void iniRand();
-    vector<Cellule>& getVoisins(int, int);
+    void Voisins(int, int, vector<Cellule>&);
     int voisinsVivant(int, int);
-    void EtapeSuivante(Grille&);
+    void EtapeSuivante();
+    Grille* operator=(const Grille&);
+    //fstream& operator=(const fstream&);
 };
 
 ostream& operator<<(ostream&, Grille&);
+
 
 #endif
