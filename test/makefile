@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-W -Wall -g
+CXXFLAGS=-W -Wall -g -std=c++11
 LDFLAGS=
 EXEC=auto
 SRC= ../src/Cellule.cc ../src/Grille.cc main.cc
