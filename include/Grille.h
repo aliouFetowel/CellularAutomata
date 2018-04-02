@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define N 10
+#define N 30
 
 class Grille{
   private:

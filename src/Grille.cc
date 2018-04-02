@@ -255,7 +255,6 @@ void Grille::EtapeSuivante()
             }
         }
     }
-    
     *this = *g;
 }
 
