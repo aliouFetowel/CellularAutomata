@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#define N 30
+#define N 60
 
 class Grille{
   private:
@@ -27,7 +27,9 @@ class Grille{
     Cellule getCellule(int , int);
     void iniRand();
     void Voisins(int, int, vector<Cellule>&);
-    int voisinsVivant(int, int);
+    //int voisinsVivant(int, int);
+    void predProieVoisins(int x, int y, int tab[]);
+
     void EtapeSuivante();
     Grille* operator=(const Grille&);
     //fstream& operator=(const fstream&);

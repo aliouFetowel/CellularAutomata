@@ -3,22 +3,27 @@
 
 #include"../include/Cellule.h"
 
+#define RED "\033[00;31m"
+#define GREEN "\033[00;33m"
+#define BLACK "\033[00;30m"
+#define DEFAULT "\033[00m"
+
 using namespace std;
 
 
-Cellule::Cellule(bool etat, int abs, int ord)
+Cellule::Cellule(Etat etat, int abs, int ord)
 {
   this->etat = etat;
   this->abs = abs;
   this->ord = ord;
 }
 
-bool Cellule::getEtat() const
+Etat Cellule::getEtat() const
 {
   return this->etat;
 }
 
-void Cellule::setEtat(bool etat)
+void Cellule::setEtat(Etat etat)
 {
   this->etat = etat;
 }
@@ -35,8 +40,10 @@ int Cellule::getOrd() const
 
 void  Cellule::affiche(ostream& os) const
 {
-    if(etat == true) os<<"X";
-    else os<<".";
+
+    if(etat == Etat::pred) os<<RED<<"x"<<DEFAULT;
+    else if(etat == Etat::proie) os<<GREEN<<"x"<<DEFAULT;
+    else os<<BLACK<<"."<<DEFAULT;
 }
 
 ostream& operator<<(ostream& os, Cellule& c)

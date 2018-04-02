@@ -23,7 +23,7 @@ Grille::Grille()
   }
   for(int i = 0; i < N; i++){
       for(int j = 0; j < N; j++){
-          cells[i][j] = Cellule(false, i, j);
+          cells[i][j] = Cellule(Etat::vide, i, j);
       }
   }
 
@@ -35,11 +35,13 @@ Grille::Grille()
 
 void Grille::iniRand()
 {
-    for(int i = 0; i < N*5; i++){
+    for(int i = 0; i < N; i++){
         int x = rand() % N;
         int y = rand() % N;
+        int z = rand() % 2;
+        if(z == 0) cells[x][y].setEtat(Etat::pred);
+        else cells[x][y].setEtat(Etat::proie);
 
-        cells[x][y].setEtat(true);
     }
 }
 
@@ -53,7 +55,12 @@ void Grille::ecrire(){
         chaine.append(1,'\n');
         for(int i = 0; i < N; i++){
             for(int j = 0; j < N; j++){
-                chaine.append(1, (bool)cells[i][j].getEtat());
+                char aEcrire;
+                if(cells[i][j].getEtat() == Etat::pred) aEcrire = 'P';
+                if(cells[i][j].getEtat() == Etat::proie) aEcrire = 'Q';
+                if(cells[i][j].getEtat() == Etat::vide) aEcrire = '.';
+
+                chaine.append(1, aEcrire);
             }
             chaine.append(1,'\n');
         }
@@ -91,7 +98,9 @@ void Grille::lire(){
             getline(ss,ligne,'\n'); // pour sautetr une ligne
             while(getline(ss, ligne, '\n')){
                 for(int j = 0; j < N; j++){
-                    cells[k][j].setEtat((bool)ligne[j]);
+                    if(ligne[j] == 'P') cells[k][j].setEtat(Etat::pred);
+                    if(ligne[j] == 'Q') cells[k][j].setEtat(Etat::proie);
+                    if(ligne[j] == '.') cells[k][j].setEtat(Etat::vide);
                 }
                 k++;
                 ligne = "";
@@ -219,6 +228,7 @@ Cellule Grille::getCellule(int abs, int ord)
             /*cout<<"la taille des voisins est "<<vois->size()<<endl;
         return *vois;*/
 }
+/*
 
 int Grille::voisinsVivant(int x, int y)
 {
@@ -234,22 +244,77 @@ int Grille::voisinsVivant(int x, int y)
         if(vois[i].getEtat() == true) cpt++;
     }
     return cpt;
+}*/
+
+void Grille::predProieVoisins(int x, int y, int tab[2]){
+    int pred = 0, proie = 0;
+    //printf("avant appel de getVoisins \n" );
+
+    vector<Cellule> vois;
+    //cout<<"la valeur de getVoisins" <<getVoisins(x, y).size()<<endl;
+    //return getVoisins(x,y).size();
+    Voisins(x, y, vois);
+    //cout<<"le nombre de voisins est "<<vois.size()<<endl;
+/*    cout<<"\npour la cellule "<<x<<" "<<y<<endl;
+    for(unsigned int i = 0; i< vois.size(); i++){
+        if(vois[i].getEtat() == Etat::pred) cout<<" p ";
+        if(vois[i].getEtat() == Etat::proie) cout<<"q ";
+    }*/
+    for(unsigned int i = 0; i < vois.size(); i++){
+        if(vois[i].getEtat() == Etat::pred) pred++;
+        if(vois[i].getEtat() == Etat::proie) proie++;
+    }
+    tab[0] = pred;
+    tab[1] = proie;
 }
 
+
+void Grille::EtapeSuivante(){
+    Grille *g = new Grille();
+    for(int i = 0; i < N; i++){
+        for(int j = 0; j < N; j++){
+            int nbVois[2]={0};
+            predProieVoisins(i,j,nbVois);
+
+            //cout<<"cellule "<<i<<" "<<j<<" pred "<<nbVois[0]<<" proie "<<nbVois[1]<<endl;
+
+            if(cells[i][j].getEtat() == Etat::pred){
+                if(nbVois[1] == 0) g->cells[i][j].setEtat(Etat::vide);
+                else if(nbVois[1] >= 1)g->cells[i][j].setEtat(Etat::pred);
+            }
+            if(cells[i][j].getEtat() == Etat::proie){
+                if(nbVois[1] > 7) g->cells[i][j].setEtat(Etat::vide);
+                else if(nbVois[0] > 4) g->cells[i][j].setEtat(Etat::pred);
+                else if(nbVois[0] > 0 && nbVois[0] < 5) g->cells[i][j].setEtat(Etat::proie);
+                else g->cells[i][j].setEtat(Etat::proie);
+
+            }
+            if(cells[i][j].getEtat() == Etat::vide){
+                if(nbVois[0] == nbVois[1]) g->cells[i][j].setEtat(Etat::vide);
+                else if(nbVois[1] > nbVois[0]) g->cells[i][j].setEtat(Etat::proie);
+                else if(nbVois[0] > nbVois[1]-1) g->cells[i][j].setEtat(Etat::pred);
+                else g->cells[i][j].setEtat(Etat::vide);
+            }
+        }
+    }
+    *this =*g;
+}
+
+/*
 void Grille::EtapeSuivante()
 {
     Grille *g = new Grille();
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
             //printf("je suis dans la boucle\n");
-            int nbVoisins = voisinsVivant(i,j);
+            int nbVois = voisinsVivant(i,j);
             //Cellule cel = getCellule(i,j);
             if(cells[i][j].getEtat() == false){
-                if(nbVoisins == 3) g->cells[i][j].setEtat(true);
+                if(nbVois == 3) g->cells[i][j].setEtat(true);
             }
             if(cells[i][j].getEtat() == true){
             //    printf("je suis dans le prémier if\n");
-                if(nbVoisins == 2 || nbVoisins == 3) g->cells[i][j].setEtat(true);
+                if(nbVois == 2 || nbVois == 3) g->cells[i][j].setEtat(true);
                 else g->cells[i][j].setEtat(false);
 
             }
@@ -257,7 +322,7 @@ void Grille::EtapeSuivante()
     }
     *this = *g;
 }
-
+*/
 
 
 void Grille::affiche(ostream& os) const

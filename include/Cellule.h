@@ -9,20 +9,22 @@
 
 using namespace std;
 
+enum class Etat {pred, proie, vide} ;
+
 class Cellule{
   private:
-    bool etat;
+    Etat etat;
     int abs;
     int ord;
 
   public:
   /* constructeurs */
-    Cellule(bool = false, int = 0, int = 0);
+    Cellule(Etat = Etat::vide, int = 0, int = 0);
   /* getteurs et setteurs */
-    bool getEtat() const;
+    Etat getEtat() const;
     int getAbs() const;
     int getOrd() const;
-    void setEtat(bool);
+    void setEtat(Etat);
 
     void affiche(ostream&) const;
 
