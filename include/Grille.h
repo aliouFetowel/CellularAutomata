@@ -19,7 +19,7 @@ class Grille{
     fstream file;
    public:
     Grille();
-    //~Grille();
+    
 
     void affiche(ostream&) const;
     void ecrire();
@@ -27,12 +27,11 @@ class Grille{
     Cellule getCellule(int , int);
     void iniRand();
     void Voisins(int, int, vector<Cellule>&);
-    //int voisinsVivant(int, int);
     void predProieVoisins(int x, int y, int tab[]);
 
     void EtapeSuivante();
     Grille* operator=(const Grille&);
-    //fstream& operator=(const fstream&);
+   
 };
 
 ostream& operator<<(ostream&, Grille&);

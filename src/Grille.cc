@@ -13,7 +13,6 @@
 using namespace std;
 
 string Grille::fichier = "../Ressources/jeux.txt";
-//fstream Grille::file(fichier, fstream::in | fstream::out | fstream::app);
 
 Grille::Grille()
 {
@@ -27,10 +26,7 @@ Grille::Grille()
       }
   }
 
- /* file.open(fichier, fstream::in | fstream::out);
-  if(!file){
-      cerr<<"erreur lors de l'ouverture du fichier"<<endl;
-  }*/
+
 }
 
 void Grille::iniRand()
@@ -46,9 +42,7 @@ void Grille::iniRand()
 }
 
 void Grille::ecrire(){
-    //ofstream file(fichier.c_str());
     file.open(fichier, fstream::in | fstream::app);
-    //cout<<"position avant écriture "<<file.tellp()<<endl;
     string chaine = "";
     if(file){
         file << "$";
@@ -71,28 +65,19 @@ void Grille::ecrire(){
     }else{
         cerr <<"erreur lors de l'ouverture du fichier"<<endl;
     }
-    //cout<<"position après écriture "<<file.tellg()<<endl;
-    /*cout<<"position "<<file.tellp()<<endl;
-    file.seekp(-114, ios::cur);
-    cout<<"position "<<file.tellp()<<endl;*/
+   
     file.close();
 
 }
 
 void Grille::lire(){
-//  ifstream file(fichier.c_str());
-    //Grille *g2 = new Grille();
     file.open(fichier, fstream::out | fstream::app);
-    //cout<<"dans lire position "<<file.tellg()<<endl;
     if(file.tellg() != 0) file.seekg(-(N*N+14), ios::cur); //pour lire la dernière grille
-    //cout<<"dans lire position "<<file.tellg()<<endl;
-
     string chaine = "", ligne = "";
     char delim;
     int k = 0;
     if(file){
         file >> delim; // récuperer $
-    //    cout<<"le delimitateur est"<<delim<<endl;
         while(getline(file, chaine,  delim)){
             stringstream ss(chaine);
             getline(ss,ligne,'\n'); // pour sautetr une ligne
@@ -105,13 +90,10 @@ void Grille::lire(){
                 k++;
                 ligne = "";
             }
-        //    cout<<"dans la lecture position "<<file.tellg()<<endl;
         }
-        //file.seekg(-114, ios::cur); //pour lire la dernière grille
     }else{
         cerr << "erreur lors de l'ouverture du fichier" <<endl;
     }
-    //cout<<"position après lecture "<<file.tellg()<<endl;
     file.close();
 }
 
@@ -123,9 +105,6 @@ Cellule Grille::getCellule(int abs, int ord)
 
  void Grille::Voisins(int i, int j, vector<Cellule>& vois)
 {
-            //vector<Cellule> *vois = NULL;
-        //    cout<<"dans getVoisins "<<vois.size()<<endl;
-
             if(i == 0 && j == 0){
                 vois.push_back(getCellule(j,N-1));
                 vois.push_back(getCellule(j+1,N-1));
@@ -225,8 +204,6 @@ Cellule Grille::getCellule(int abs, int ord)
                 vois.push_back(getCellule(i,j-1));
 
             }
-            /*cout<<"la taille des voisins est "<<vois->size()<<endl;
-        return *vois;*/
 }
 /*
 
@@ -248,18 +225,9 @@ int Grille::voisinsVivant(int x, int y)
 
 void Grille::predProieVoisins(int x, int y, int tab[2]){
     int pred = 0, proie = 0;
-    //printf("avant appel de getVoisins \n" );
-
+    
     vector<Cellule> vois;
-    //cout<<"la valeur de getVoisins" <<getVoisins(x, y).size()<<endl;
-    //return getVoisins(x,y).size();
     Voisins(x, y, vois);
-    //cout<<"le nombre de voisins est "<<vois.size()<<endl;
-/*    cout<<"\npour la cellule "<<x<<" "<<y<<endl;
-    for(unsigned int i = 0; i< vois.size(); i++){
-        if(vois[i].getEtat() == Etat::pred) cout<<" p ";
-        if(vois[i].getEtat() == Etat::proie) cout<<"q ";
-    }*/
     for(unsigned int i = 0; i < vois.size(); i++){
         if(vois[i].getEtat() == Etat::pred) pred++;
         if(vois[i].getEtat() == Etat::proie) proie++;
@@ -276,7 +244,6 @@ void Grille::EtapeSuivante(){
             int nbVois[2]={0};
             predProieVoisins(i,j,nbVois);
 
-            //cout<<"cellule "<<i<<" "<<j<<" pred "<<nbVois[0]<<" proie "<<nbVois[1]<<endl;
 
             if(cells[i][j].getEtat() == Etat::pred){
                 if(nbVois[1] == 0) g->cells[i][j].setEtat(Etat::vide);
@@ -345,13 +312,7 @@ ostream& operator<<(ostream& os, Grille& p)
 Grille* Grille::operator=(const Grille& g)
 {
     this->cells = g.cells;
-    //file = g.file;
     return this;
 }
 
-/*
-fstream& Grille::operator=(const fstream& f)
-{
-    file = f;
-    return *f;
-}*/
+
